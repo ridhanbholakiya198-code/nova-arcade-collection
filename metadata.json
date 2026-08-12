@@ -1,0 +1,6 @@
+{
+  "name": "Nova Arcade Collection",
+  "description": "A premium 15-game arcade ecosystem featuring original touch-first games, global progression, and offline playability.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
