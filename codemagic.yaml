@@ -3,29 +3,37 @@ workflows:
     name: Nova Arcade Android Release
     max_build_duration: 30
     instance_type: mac_mini_m1
+
     environment:
       node: 20
       groups:
-        - android_signing # References the Codemagic credentials group
+        - android_signing
+
     scripts:
       - name: Install npm dependencies
         script: |
-        rm -rf node_modules package-lock.json
-        npm cache clean --force
-        npm install --include=optional
+          rm -rf node_modules package-lock.json
+          npm cache clean --force
+          npm install --include=optional
+
       - name: Build web assets
         script: npm run build
+
       - name: Sync Capacitor Android
         script: npx cap sync android
+
       - name: Set up local.properties
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+
       - name: Build Android Release
         script: |
           cd android
           ./gradlew assembleRelease
+
     artifacts:
       - android/app/build/outputs/apk/release/**/*.apk
+
     publishing:
       email:
         recipients:
