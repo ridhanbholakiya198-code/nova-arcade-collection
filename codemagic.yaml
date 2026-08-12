@@ -30,6 +30,7 @@ workflows:
         script: |
           cd android
           chmod +x gradlew
+          ./gradlew wrapper --gradle-version 8.6 --distribution-type bin
           ./gradlew assembleRelease
 
     artifacts:
