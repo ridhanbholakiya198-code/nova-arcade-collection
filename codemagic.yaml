@@ -22,14 +22,16 @@ workflows:
       - name: Sync Capacitor Android
         script: npx cap sync android
 
-      - name: Set up local.properties
+      - name: Set up Android SDK
         script: |
           echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
 
       - name: Build Android Release
         script: |
-          export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+          export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-21.jdk/Contents/Home"
           export PATH="$JAVA_HOME/bin:$PATH"
+          java -version
+          javac -version
           cd android
           rm -f gradle/wrapper/gradle-wrapper.jar
           gradle wrapper --gradle-version 8.13 --distribution-type bin
