@@ -28,6 +28,8 @@ workflows:
 
       - name: Build Android Release
         script: |
+          export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+          export PATH="$JAVA_HOME/bin:$PATH"
           cd android
           rm -f gradle/wrapper/gradle-wrapper.jar
           gradle wrapper --gradle-version 8.13 --distribution-type bin
