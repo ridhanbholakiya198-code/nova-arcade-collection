@@ -256,7 +256,7 @@ export class OrbitEngine {
 
   draw = () => {
     // Clear
-    this.ctx.fillStyle = '#09090b'; // zinc-950
+    this.ctx.fillStyle = '#000000'; // zinc-950
     this.ctx.fillRect(0, 0, this.width, this.height);
 
     this.ctx.save();

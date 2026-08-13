@@ -3,44 +3,35 @@ workflows:
     name: Nova Arcade Android Release
     max_build_duration: 30
     instance_type: mac_mini_m1
-
     environment:
       node: 22
+      java: 21
       groups:
         - android_signing
-
+      vars:
+        CM_KEYSTORE_PATH: /tmp/keystore/release.keystore
     scripts:
       - name: Install npm dependencies
         script: |
           rm -rf node_modules package-lock.json
           npm cache clean --force
           npm install --include=optional
-
       - name: Build web assets
         script: npm run build
-
       - name: Sync Capacitor Android
         script: npx cap sync android
-
       - name: Set up Android SDK
+        script: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+      - name: Decode release keystore
         script: |
-          echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
-
+          mkdir -p "$(dirname "$CM_KEYSTORE_PATH")"
+          echo "$CM_KEYSTORE" | base64 --decode > "$CM_KEYSTORE_PATH"
       - name: Build Android Release
         script: |
-          export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-21.jdk/Contents/Home"
-          export PATH="$JAVA_HOME/bin:$PATH"
-          java -version
-          javac -version
           cd android
-          rm -f gradle/wrapper/gradle-wrapper.jar
-          gradle wrapper --gradle-version 8.13 --distribution-type bin
-          chmod +x gradlew
-          ./gradlew assembleRelease
-
+          ./gradlew assembleRelease --no-daemon
     artifacts:
       - android/app/build/outputs/apk/release/**/*.apk
-
     publishing:
       email:
         recipients:

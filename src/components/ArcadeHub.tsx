@@ -15,7 +15,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
   const progress = Math.max(0, Math.min(100, ((profile.xp - xpForCurrentLevel) / (xpForNextLevel - xpForCurrentLevel)) * 100));
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex flex-col font-sans">
+    <div className="min-h-screen bg-black flex flex-col font-sans">
       {/* Header Profile Section */}
       <header className="px-6 py-8 md:px-12 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div>
@@ -35,7 +35,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
               <span className="text-xs text-zinc-400 font-mono">{profile.xp} XP</span>
             </div>
           </div>
-          <div className="h-2 bg-zinc-950 rounded-full overflow-hidden">
+          <div className="h-2 bg-zinc-900 rounded-full overflow-hidden">
             <motion.div 
               className="h-full bg-amber-500"
               initial={{ width: 0 }}
@@ -76,7 +76,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                   {/* Tags */}
                   <div className="flex gap-2 mb-4">
                     {game.tags.map(tag => (
-                      <span key={tag} className="px-3 py-1 rounded-full bg-zinc-950/50 text-[10px] uppercase font-bold tracking-wider text-zinc-400 border border-zinc-800">
+                      <span key={tag} className="px-3 py-1 rounded-full bg-zinc-900/50 text-[10px] uppercase font-bold tracking-wider text-zinc-400 border border-zinc-800">
                         {tag}
                       </span>
                     ))}
@@ -93,7 +93,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                     {isUnlocked ? (
                       <div className="space-y-6">
                         {/* Stats */}
-                        <div className="bg-zinc-950/50 rounded-xl p-4 border border-zinc-800 flex justify-between items-center backdrop-blur-sm">
+                        <div className="bg-zinc-900/50 rounded-xl p-4 border border-zinc-800 flex justify-between items-center backdrop-blur-sm">
                           <div className="flex items-center gap-3">
                             <div className={`p-2 rounded-lg ${game.accent} bg-opacity-20`}>
                               <Trophy size={18} className={`text-opacity-100 ${game.accent.replace('bg-', 'text-')}`} />
@@ -115,7 +115,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                         </button>
                       </div>
                     ) : (
-                      <div className="flex flex-col items-center justify-center h-48 bg-zinc-950/40 rounded-xl border border-zinc-800/50 border-dashed">
+                      <div className="flex flex-col items-center justify-center h-48 bg-zinc-900/40 rounded-xl border border-zinc-800/50 border-dashed">
                         <Lock size={32} className="text-zinc-700 mb-3" />
                         <p className="text-sm font-bold text-zinc-600 uppercase tracking-widest">
                           Unlocks at Level {game.unlockLevel}

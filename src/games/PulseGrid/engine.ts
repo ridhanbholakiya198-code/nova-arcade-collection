@@ -117,7 +117,7 @@ export class PulseGridEngine implements GameEngine {
   }
   
   draw = () => {
-    this.ctx.fillStyle = '#09090b';
+    this.ctx.fillStyle = '#000000';
     this.ctx.fillRect(0, 0, this.width, this.height);
     
     for (const n of this.nodes) {

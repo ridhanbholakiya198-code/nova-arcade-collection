@@ -105,7 +105,7 @@ export function GameContainer({ gameId, title, description, accentColor, EngineC
 
       {/* Game Over Overlay */}
       {gameOver && (
-        <div className="absolute inset-0 bg-zinc-950/90 backdrop-blur-md flex flex-col items-center justify-center pointer-events-auto z-20">
+        <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex flex-col items-center justify-center pointer-events-auto z-20">
           <p className="text-zinc-400 font-bold tracking-[0.3em] uppercase mb-2">Game Over</p>
           <h2 className="text-5xl font-display text-white mb-8">{scoreLabel}: {score}</h2>
           

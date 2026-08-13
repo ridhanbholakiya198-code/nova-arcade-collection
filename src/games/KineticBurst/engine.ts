@@ -151,7 +151,7 @@ export class KineticBurstEngine implements GameEngine {
   }
   
   draw = () => {
-    this.ctx.fillStyle = '#09090b';
+    this.ctx.fillStyle = '#000000';
     this.ctx.fillRect(0, 0, this.width, this.height);
     
     // Draw grid lines radiating from center
