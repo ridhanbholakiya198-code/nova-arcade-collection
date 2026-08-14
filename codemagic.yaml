@@ -12,7 +12,9 @@ workflows:
         CM_KEYSTORE_PATH: /tmp/keystore/release.keystore
     scripts:
       - name: Install npm dependencies
-        script: npm install
+        script: |
+          npm install
+          npm install --no-save lightningcss-darwin-arm64@1.32.0
       - name: Build web assets
         script: npm run build
       - name: Sync Capacitor Android
