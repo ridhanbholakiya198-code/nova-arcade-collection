@@ -6,10 +6,8 @@ workflows:
     environment:
       node: 22
       java: 21
-      groups:
+      android_signing:
         - ayuguard_release
-      vars:
-        CM_KEYSTORE_PATH: /tmp/keystore/release.keystore
     scripts:
       - name: Install npm dependencies
         script: |
@@ -21,10 +19,6 @@ workflows:
         script: npx cap sync android
       - name: Set up Android SDK
         script: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
-      - name: Decode release keystore
-        script: |
-          mkdir -p "$(dirname "$CM_KEYSTORE_PATH")"
-          echo "$CM_KEYSTORE" | base64 --decode > "$CM_KEYSTORE_PATH"
       - name: Build Android Release
         script: |
           cd android
