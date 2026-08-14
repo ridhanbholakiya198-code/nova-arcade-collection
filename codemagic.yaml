@@ -12,7 +12,7 @@ workflows:
         CM_KEYSTORE_PATH: /tmp/keystore/release.keystore
     scripts:
       - name: Install npm dependencies
-        script: npm ci
+        script: npm install
       - name: Build web assets
         script: npm run build
       - name: Sync Capacitor Android
