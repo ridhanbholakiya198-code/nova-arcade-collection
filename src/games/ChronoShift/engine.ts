@@ -172,7 +172,7 @@ export class ChronoShiftEngine implements GameEngine {
     
     // Draw bullets
     this.ctx.fillStyle = '#ef4444';
-    this.ctx.shadowBlur = 10;
+    this.ctx.shadowBlur = 6;
     this.ctx.shadowColor = '#ef4444';
     for (const b of this.bullets) {
       this.ctx.beginPath();
@@ -190,7 +190,7 @@ export class ChronoShiftEngine implements GameEngine {
     // Draw player
     if (!this.isGameOver) {
       this.ctx.fillStyle = '#facc15'; // yellow-400
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowColor = '#facc15';
       this.ctx.beginPath();
       this.ctx.arc(this.player.x, this.player.y, 10, 0, Math.PI*2);

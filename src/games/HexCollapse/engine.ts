@@ -238,7 +238,7 @@ export class HexCollapseEngine implements GameEngine {
     if (!this.isGameOver) {
       // Draw player (a diamond/cube)
       this.ctx.fillStyle = '#fff';
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowColor = '#818cf8';
       this.ctx.beginPath();
       this.ctx.arc(this.player.x, this.player.y - (this.player.jumping ? 15 : 0), 10, 0, Math.PI*2);

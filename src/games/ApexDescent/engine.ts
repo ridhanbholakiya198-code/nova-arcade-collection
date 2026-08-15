@@ -183,7 +183,7 @@ export class ApexDescentEngine implements GameEngine {
     
     // Draw beams
     this.ctx.fillStyle = '#f43f5e'; // rose-500
-    this.ctx.shadowBlur = 15;
+    this.ctx.shadowBlur = 8;
     this.ctx.shadowColor = '#f43f5e';
     for (const b of this.beams) {
       this.ctx.beginPath();
@@ -207,7 +207,7 @@ export class ApexDescentEngine implements GameEngine {
     // Draw player
     if (!this.isGameOver) {
       this.ctx.fillStyle = '#fff';
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowColor = '#fff';
       this.ctx.beginPath();
       const px = cx + Math.cos(this.player.angle) * this.player.radius;

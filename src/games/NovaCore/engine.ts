@@ -174,7 +174,7 @@ export class NovaCoreEngine implements GameEngine {
     
     // Draw bullets
     this.ctx.fillStyle = '#fcd34d'; // amber-300
-    this.ctx.shadowBlur = 10;
+    this.ctx.shadowBlur = 6;
     this.ctx.shadowColor = '#fcd34d';
     for (const b of this.bullets) {
       this.ctx.fillRect(b.x - 2, b.y - 8, 4, 16);
@@ -203,7 +203,7 @@ export class NovaCoreEngine implements GameEngine {
     // Draw player
     if (!this.isGameOver) {
       this.ctx.fillStyle = '#f8fafc'; // slate-50
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowColor = '#fff';
       this.ctx.beginPath();
       this.ctx.moveTo(this.player.x, this.player.y - 15);

@@ -145,7 +145,7 @@ export class NeonDriftEngine implements GameEngine {
     
     // Draw walls
     this.ctx.fillStyle = '#22d3ee'; // cyan-400
-    this.ctx.shadowBlur = 15;
+    this.ctx.shadowBlur = 8;
     this.ctx.shadowColor = '#0891b2';
     
     for (const w of this.walls) {
@@ -165,7 +165,7 @@ export class NeonDriftEngine implements GameEngine {
     // Draw player
     if (!this.isGameOver) {
       this.ctx.fillStyle = '#fff';
-      this.ctx.shadowBlur = 20;
+      this.ctx.shadowBlur = 11;
       this.ctx.shadowColor = '#22d3ee';
       this.ctx.beginPath();
       this.ctx.arc(this.player.x, this.player.y, this.player.radius, 0, Math.PI*2);

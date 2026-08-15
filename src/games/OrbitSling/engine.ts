@@ -305,11 +305,11 @@ export class OrbitEngine {
       if (isTarget) {
         this.ctx.fillStyle = '#fef3c7';
         this.ctx.shadowColor = '#f59e0b';
-        this.ctx.shadowBlur = 15;
+        this.ctx.shadowBlur = 8;
       } else if (inRange) {
         this.ctx.fillStyle = '#f59e0b';
         this.ctx.shadowColor = '#d97706';
-        this.ctx.shadowBlur = 10;
+        this.ctx.shadowBlur = 6;
       } else {
         this.ctx.fillStyle = '#3f3f46';
         this.ctx.shadowColor = 'transparent';
@@ -335,7 +335,7 @@ export class OrbitEngine {
       this.ctx.arc(this.player.x, this.player.y, this.player.radius, 0, Math.PI * 2);
       this.ctx.fillStyle = '#ffffff';
       this.ctx.shadowColor = this.player.tethered ? '#f59e0b' : '#38bdf8';
-      this.ctx.shadowBlur = 20;
+      this.ctx.shadowBlur = 11;
       this.ctx.fill();
     }
 

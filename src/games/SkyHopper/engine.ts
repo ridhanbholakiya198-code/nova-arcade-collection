@@ -16,6 +16,6 @@ export class SkyHopperEngine implements GameEngine {
     if(this.py-this.camera>this.h+100)this.end();
   };
   end=()=>{if(this.gameOver)return;this.gameOver=true;this.callbacks.onGameOver(this.score);};
-  draw=()=>{const c=this.ctx;c.fillStyle='#000';c.fillRect(0,0,this.w,this.h);const scale=Math.min(this.w,500);for(const p of this.platforms){const sy=p.y-this.camera+this.h*.45;if(sy<-40||sy>this.h+40)continue;const x=p.x*this.w,w=p.width*this.w;c.fillStyle='#fde047';c.shadowBlur=12;c.shadowColor='#fde047';c.fillRect(x-w/2,sy,w,10);}const py=this.py-this.camera+this.h*.45,px=this.px*this.w;c.fillStyle='#fff';c.shadowBlur=18;c.shadowColor='#fde047';c.beginPath();c.arc(px,py,14,0,Math.PI*2);c.fill();c.shadowBlur=0;};
+  draw=()=>{const c=this.ctx;c.fillStyle='#000';c.fillRect(0,0,this.w,this.h);const scale=Math.min(this.w,500);for(const p of this.platforms){const sy=p.y-this.camera+this.h*.45;if(sy<-40||sy>this.h+40)continue;const x=p.x*this.w,w=p.width*this.w;c.fillStyle='#fde047';c.shadowBlur=7;c.shadowColor='#fde047';c.fillRect(x-w/2,sy,w,10);}const py=this.py-this.camera+this.h*.45,px=this.px*this.w;c.fillStyle='#fff';c.shadowBlur=10;c.shadowColor='#fde047';c.beginPath();c.arc(px,py,14,0,Math.PI*2);c.fill();c.shadowBlur=0;};
   loop=(t:number)=>{if(!this.running)return;const dt=Math.min(.032,(t-this.last)/1000);this.last=t;this.update(dt);if(!this.running)return;this.draw();this.frame=requestAnimationFrame(this.loop);};
 }

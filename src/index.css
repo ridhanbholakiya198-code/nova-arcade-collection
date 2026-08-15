@@ -32,7 +32,7 @@ body {
 html[data-appearance='dim'] body { background-color: #09090b; }
 html[data-appearance='dim'] .bg-black { background-color: #09090b !important; }
 body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-\n
+
 /* Nova Arcade v2 theme + mobile menu polish */
 .nova-hub {
   min-height: 100dvh;
@@ -97,6 +97,35 @@ html[data-appearance='light'] .nova-hub .hover:bg-white/[0.09]:hover {
 }
 html[data-appearance='light'] .nova-hub .shadow-2xl {
   box-shadow: 0 20px 60px rgba(0,0,0,.14) !important;
+}
+
+/* Game cards in light mode: the dark-theme's heavy black drop shadow and
+   near-invisible translucent-black stat panels read as flat/cheap on a white
+   card, so they get proper elevation + real surfaces instead of the
+   dark-theme values bleeding through. */
+html[data-appearance='light'] .nova-hub .nova-game-card {
+  background-color: #ffffff !important;
+  border-color: #e4e4e9 !important;
+  box-shadow: 0 4px 16px rgba(24,24,27,.06), 0 20px 45px rgba(24,24,27,.10) !important;
+}
+html[data-appearance='light'] .nova-hub .nova-game-card:hover {
+  border-color: #d4d4db !important;
+  box-shadow: 0 6px 20px rgba(24,24,27,.08), 0 26px 55px rgba(24,24,27,.13) !important;
+}
+html[data-appearance='light'] .nova-hub .nova-card-glow {
+  opacity: 0.14 !important;
+}
+html[data-appearance='light'] .nova-hub .nova-icon-box {
+  background-color: #f4f4f6 !important;
+  border-color: #e4e4e9 !important;
+  box-shadow: inset 0 1px 2px rgba(24,24,27,.04) !important;
+}
+html[data-appearance='light'] .nova-hub .nova-stat-box {
+  background-color: #f7f7f9 !important;
+  border-color: #ececef !important;
+}
+html[data-appearance='light'] .nova-hub .nova-game-card .border-zinc-800 {
+  border-color: #e4e4e9 !important;
 }
 
 /* Appearance control */

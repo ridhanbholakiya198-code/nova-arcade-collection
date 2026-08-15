@@ -144,7 +144,7 @@ export class VoidRunnerEngine implements GameEngine {
     this.ctx.fillRect(0, this.height - 50, this.width, 50);
     
     this.ctx.fillStyle = '#34d399'; // emerald-400
-    this.ctx.shadowBlur = 10;
+    this.ctx.shadowBlur = 6;
     this.ctx.shadowColor = '#34d399';
     for (const ob of this.obstacles) {
       this.ctx.fillRect(ob.x, ob.y, ob.w, ob.h);
@@ -158,7 +158,7 @@ export class VoidRunnerEngine implements GameEngine {
     
     if (!this.isGameOver) {
       this.ctx.fillStyle = '#fff';
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowColor = '#fff';
       this.ctx.fillRect(this.player.x - this.player.size/2, this.player.y - this.player.size/2, this.player.size, this.player.size);
     }

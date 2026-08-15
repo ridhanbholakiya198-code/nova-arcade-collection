@@ -166,7 +166,7 @@ export class SplitStreamEngine implements GameEngine {
     this.ctx.setLineDash([]);
     
     // Draw obstacles
-    this.ctx.shadowBlur = 10;
+    this.ctx.shadowBlur = 6;
     this.ctx.shadowColor = '#ef4444';
     this.ctx.fillStyle = '#ef4444';
     for (const ob of this.obstacles) {
@@ -185,7 +185,7 @@ export class SplitStreamEngine implements GameEngine {
     
     // Draw ships
     if (!this.isGameOver) {
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       
       const lx = this.getLaneX('left', this.leftShip.lane);
       this.ctx.shadowColor = '#f472b6'; // pink-400

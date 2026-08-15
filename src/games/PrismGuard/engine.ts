@@ -162,7 +162,7 @@ export class PrismGuardEngine implements GameEngine {
       const px = this.cx + Math.cos(p.angle) * p.dist;
       const py = this.cy + Math.sin(p.angle) * p.dist;
       this.ctx.fillStyle = this.colors[p.colorIndex];
-      this.ctx.shadowBlur = 10;
+      this.ctx.shadowBlur = 6;
       this.ctx.shadowColor = this.colors[p.colorIndex];
       this.ctx.beginPath();
       this.ctx.arc(px, py, 6, 0, Math.PI*2);

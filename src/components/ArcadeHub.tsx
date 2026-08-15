@@ -1,13 +1,15 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { GAMES, GameDefinition } from '../types';
 import { useStore } from '../lib/store.tsx';
 import { audio } from '../lib/audio';
+import { APP_VERSION, checkForUpdate, type VersionCheckResult } from '../lib/version';
 import {
   Play, Trophy, Gamepad2, Github, Clock3, Info, Palette,
   ChevronRight, Shield, FileText, X, MoreVertical, Zap,
   Wind, Layers, Car, Brain, Orbit, Sparkles, Timer, CircleDot,
   Crosshair, Boxes, Waypoints, Gauge, Moon, Sun, Shuffle, Target, Hexagon,
+  Tag, CheckCircle2, ArrowUpCircle, RefreshCw, AlertCircle,
   type LucideIcon
 } from 'lucide-react';
 
@@ -102,11 +104,60 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
   const { profile, totalTimePlayed } = useStore();
   const [menuOpen, setMenuOpen] = useState(false);
   const [subMenu, setSubMenu] = useState<'about' | null>(null);
-  const [panel, setPanel] = useState<'time' | 'terms' | 'privacy' | null>(null);
+  const [panel, setPanel] = useState<'time' | 'terms' | 'privacy' | 'version' | null>(null);
   const [appearance, setAppearance] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('nova_arcade_appearance');
     return saved === 'light' || saved === 'dim' ? 'light' : 'dark';
   });
+  const [versionCheck, setVersionCheck] = useState<VersionCheckResult | null>(null);
+  const [checkingVersion, setCheckingVersion] = useState(false);
+
+  const runVersionCheck = () => {
+    setCheckingVersion(true);
+    checkForUpdate().then(result => {
+      setVersionCheck(result);
+      setCheckingVersion(false);
+    });
+  };
+
+  // Silent background check on load so the amber "update available" dot in
+  // the menu shows up without the person needing to open the panel first.
+  useEffect(() => {
+    runVersionCheck();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Soft "cartridge menu" scroll tick while swiping through the games row —
+  // fires once per card the carousel snaps to, not on every scroll pixel.
+  const gamesRowRef = useRef<HTMLDivElement>(null);
+  const activeCardIndexRef = useRef(0);
+  const scrollRafRef = useRef<number | null>(null);
+  const handleGamesScroll = () => {
+    if (scrollRafRef.current !== null) return;
+    scrollRafRef.current = requestAnimationFrame(() => {
+      scrollRafRef.current = null;
+      const row = gamesRowRef.current;
+      if (!row) return;
+      const rowRect = row.getBoundingClientRect();
+      const centerX = rowRect.left + rowRect.width / 2;
+      let closestIdx = 0;
+      let closestDist = Infinity;
+      Array.from(row.children).forEach((child, idx) => {
+        if (!(child as HTMLElement).dataset.gameCard) return;
+        const rect = (child as HTMLElement).getBoundingClientRect();
+        const dist = Math.abs(rect.left + rect.width / 2 - centerX);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closestIdx = idx;
+        }
+      });
+      if (closestIdx !== activeCardIndexRef.current) {
+        activeCardIndexRef.current = closestIdx;
+        audio.init();
+        audio.playScroll();
+      }
+    });
+  };
 
   useEffect(() => {
     document.documentElement.dataset.appearance = appearance;
@@ -205,6 +256,19 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                   onClick={toggleAppearance}
                   right={<span className="nova-appearance-toggle" aria-label={appearance === 'dark' ? 'Switch to light theme' : 'Switch to dark AMOLED theme'}><span className="nova-appearance-thumb">{appearance === 'dark' ? <Moon size={13} /> : <Sun size={13} />}</span></span>}
                 />
+                <MenuRow
+                  icon={<Tag size={17} />}
+                  label="Version"
+                  onClick={() => { setPanel('version'); setMenuOpen(false); }}
+                  right={
+                    <span className="flex items-center gap-1.5 text-[10px] text-zinc-600 font-mono">
+                      v{APP_VERSION}
+                      {versionCheck?.status === 'update-available' && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,.8)]" />
+                      )}
+                    </span>
+                  }
+                />
 
                 <AnimatePresence>
                   {subMenu === 'about' && (
@@ -250,22 +314,27 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
           Games
         </h2>
 
-        <div className="flex-1 overflow-x-auto no-scrollbar snap-x snap-mandatory flex gap-5 pb-6 items-center">
+        <div
+          ref={gamesRowRef}
+          onScroll={handleGamesScroll}
+          className="flex-1 overflow-x-auto no-scrollbar snap-x snap-mandatory flex gap-5 pb-6 items-center"
+        >
           {GAMES.map((game, index) => {
             const stats = profile.gamesStats[game.id];
             return (
               <motion.div
                 key={game.id}
+                data-game-card="true"
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: Math.min(index * .035, .5) }}
-                className="snap-center shrink-0 w-[82vw] md:w-[380px] h-[475px] rounded-3xl overflow-hidden relative border border-zinc-800 bg-zinc-950 shadow-[0_18px_70px_rgba(0,0,0,.45)] hover:border-zinc-700 transition-colors"
+                className="nova-game-card snap-center shrink-0 w-[82vw] md:w-[380px] h-[475px] rounded-3xl overflow-hidden relative border border-zinc-800 bg-zinc-950 shadow-[0_18px_70px_rgba(0,0,0,.45)] hover:border-zinc-700 transition-colors"
               >
-                <div className={`absolute inset-0 opacity-[0.08] bg-gradient-to-br ${game.color}`} />
+                <div className={`nova-card-glow absolute inset-0 opacity-[0.08] bg-gradient-to-br ${game.color}`} />
                 <div className="absolute inset-0 p-7 flex flex-col">
                   <div className="flex items-start justify-between gap-4 mb-6">
                     <div
-                      className="w-14 h-14 rounded-2xl border border-zinc-800 bg-black/60 flex items-center justify-center shadow-inner"
+                      className="nova-icon-box w-14 h-14 rounded-2xl border border-zinc-800 bg-black/60 flex items-center justify-center shadow-inner"
                       style={{ color: game.accentHex }}
                       aria-hidden="true"
                     >
@@ -281,7 +350,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                   <p className="text-sm leading-relaxed text-zinc-400 max-w-[30ch]">{game.description}</p>
 
                   <div className="mt-auto space-y-4">
-                    <div className="bg-black/40 rounded-xl p-4 border border-zinc-900 flex items-center justify-between">
+                    <div className="nova-stat-box bg-black/40 rounded-xl p-4 border border-zinc-900 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="w-9 h-9 rounded-lg flex items-center justify-center border border-zinc-800" style={{color:game.accentHex}}>
                           <Trophy size={17} />
@@ -349,6 +418,63 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
           <p>Nova Arcade is designed to work offline. Game scores, XP, levels, and play-time statistics are stored locally on your device using browser/app storage.</p>
           <p className="mt-4">The app does not intentionally collect personal information, contacts, location, or advertising identifiers.</p>
           <p className="mt-4">If you open GitHub from the menu, that action leaves the app and is handled by the destination website according to its own privacy policy.</p>
+        </InfoPanel>
+      )}
+
+      {panel === 'version' && (
+        <InfoPanel title="Version" onClose={() => setPanel(null)}>
+          <div className="p-4 rounded-xl bg-zinc-900/70 border border-zinc-800 mb-4 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-zinc-600 mb-1">Installed Version</p>
+              <p className="text-2xl text-white font-display font-mono">v{APP_VERSION}</p>
+            </div>
+            <Tag size={22} className="text-zinc-600" />
+          </div>
+
+          {checkingVersion && (
+            <div className="flex items-center gap-2.5 text-zinc-400">
+              <RefreshCw size={16} className="animate-spin" />
+              Checking GitHub for the latest release...
+            </div>
+          )}
+
+          {!checkingVersion && versionCheck?.status === 'latest' && (
+            <div className="flex items-start gap-2.5 text-emerald-400">
+              <CheckCircle2 size={18} className="shrink-0 mt-0.5" />
+              <span>You're on the latest version. No update available right now.</span>
+            </div>
+          )}
+
+          {!checkingVersion && versionCheck?.status === 'update-available' && (
+            <div>
+              <div className="flex items-start gap-2.5 text-amber-400 mb-4">
+                <ArrowUpCircle size={18} className="shrink-0 mt-0.5" />
+                <span>Update available: v{versionCheck.latest} (you're on v{versionCheck.current})</span>
+              </div>
+              <button
+                onClick={() => window.open(versionCheck.url, '_blank', 'noopener,noreferrer')}
+                className="w-full py-3 rounded-xl bg-amber-400 text-black font-display text-sm tracking-wide flex items-center justify-center gap-2 active:scale-[.98] transition-transform"
+              >
+                Get the Update <ChevronRight size={16} />
+              </button>
+            </div>
+          )}
+
+          {!checkingVersion && versionCheck?.status === 'error' && (
+            <div className="flex items-start gap-2.5 text-zinc-500">
+              <AlertCircle size={18} className="shrink-0 mt-0.5" />
+              <span>Couldn't check for updates right now. Check your connection and try again.</span>
+            </div>
+          )}
+
+          {!checkingVersion && (
+            <button
+              onClick={runVersionCheck}
+              className="mt-4 flex items-center gap-2 text-xs text-zinc-500 hover:text-zinc-300 transition-colors"
+            >
+              <RefreshCw size={13} /> Check again
+            </button>
+          )}
         </InfoPanel>
       )}
     </div>

@@ -166,7 +166,7 @@ export class TetherBallEngine implements GameEngine {
     
     // Draw obstacles
     this.ctx.fillStyle = '#3b82f6'; // blue-500
-    this.ctx.shadowBlur = 10;
+    this.ctx.shadowBlur = 6;
     this.ctx.shadowColor = '#3b82f6';
     for (const ob of this.obstacles) {
       this.ctx.fillRect(ob.x, ob.y, ob.w, ob.h);
@@ -192,7 +192,7 @@ export class TetherBallEngine implements GameEngine {
     // Draw player
     if (!this.isGameOver) {
       this.ctx.fillStyle = '#93c5fd'; // blue-300
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowColor = '#93c5fd';
       this.ctx.beginPath();
       this.ctx.arc(this.player.x, this.player.y, 10, 0, Math.PI*2);

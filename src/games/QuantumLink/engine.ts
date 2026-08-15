@@ -194,7 +194,7 @@ export class QuantumLinkEngine implements GameEngine {
     // Draw nodes
     for (const n of this.nodes) {
       this.ctx.fillStyle = n.color;
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowColor = n.color;
       this.ctx.beginPath();
       this.ctx.arc(n.x, n.y, 15, 0, Math.PI*2);

@@ -131,7 +131,7 @@ export class PulseGridEngine implements GameEngine {
       this.ctx.beginPath();
       this.ctx.arc(n.x, n.y, Math.max(0, n.radius), 0, Math.PI*2);
       this.ctx.fillStyle = '#f43f5e';
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowColor = '#f43f5e';
       this.ctx.fill();
     }

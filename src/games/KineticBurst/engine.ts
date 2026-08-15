@@ -176,7 +176,7 @@ export class KineticBurstEngine implements GameEngine {
     
     // Draw enemies
     this.ctx.fillStyle = '#dc2626'; // red-600
-    this.ctx.shadowBlur = 10;
+    this.ctx.shadowBlur = 6;
     this.ctx.shadowColor = '#dc2626';
     for (const en of this.enemies) {
       this.ctx.beginPath();
@@ -194,7 +194,7 @@ export class KineticBurstEngine implements GameEngine {
     // Draw core
     if (!this.isGameOver) {
       this.ctx.fillStyle = '#f97316';
-      this.ctx.shadowBlur = 20;
+      this.ctx.shadowBlur = 11;
       this.ctx.shadowColor = '#f97316';
       this.ctx.beginPath();
       this.ctx.arc(this.cx, this.cy, 20 + Math.sin(this.frame * 0.1) * 2, 0, Math.PI*2);

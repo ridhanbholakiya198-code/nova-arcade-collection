@@ -40,7 +40,7 @@ export class GravityFlipEngine implements GameEngine {
     const c=this.ctx;c.fillStyle='#000';c.fillRect(0,0,this.width,this.height);
     const top=70,bottom=this.height-70,px=this.width*.22;
     c.strokeStyle='#27272a';c.lineWidth=2;c.beginPath();c.moveTo(0,top);c.lineTo(this.width,top);c.moveTo(0,bottom);c.lineTo(this.width,bottom);c.stroke();
-    c.fillStyle='#ec4899';c.shadowBlur=16;c.shadowColor='#ec4899';
+    c.fillStyle='#ec4899';c.shadowBlur=9;c.shadowColor='#ec4899';
     for(const o of this.obstacles){c.fillRect(o.x-o.width/2,o.top?top:bottom-o.height,o.width,o.height);}
     c.fillStyle='#fff';c.shadowColor='#ec4899';c.beginPath();c.arc(px,this.playerY,14,0,Math.PI*2);c.fill();
     c.shadowBlur=0;

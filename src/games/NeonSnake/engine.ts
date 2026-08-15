@@ -28,8 +28,8 @@ export class NeonSnakeEngine implements GameEngine {
   draw=()=>{const c=this.ctx;c.fillStyle='#000';c.fillRect(0,0,this.width,this.height);const cell=Math.min((this.width-36)/this.cols,(this.height-120)/this.rows),ox=(this.width-cell*this.cols)/2,oy=(this.height-cell*this.rows)/2+25;
     c.strokeStyle='#151515';c.lineWidth=1;for(let x=0;x<=this.cols;x++){c.beginPath();c.moveTo(ox+x*cell,oy);c.lineTo(ox+x*cell,oy+this.rows*cell);c.stroke();}for(let y=0;y<=this.rows;y++){c.beginPath();c.moveTo(ox,oy+y*cell);c.lineTo(ox+this.cols*cell,oy+y*cell);c.stroke();}
     const drawCell=(p:Cell,color:string,glow:number)=>{c.fillStyle=color;c.shadowBlur=glow;c.shadowColor=color;c.fillRect(ox+p.x*cell+2,oy+p.y*cell+2,cell-4,cell-4);}; 
-    if(this.portalA&&this.portalB){drawCell(this.portalA,'#a78bfa',10);drawCell(this.portalB,'#a78bfa',10);}
-    drawCell(this.food,'#facc15',12);this.snake.forEach((s,i)=>drawCell(s,i===0?'#22d3ee':'#0e7490',i===0?14:4));c.shadowBlur=0;
+    if(this.portalA&&this.portalB){drawCell(this.portalA,'#a78bfa',6);drawCell(this.portalB,'#a78bfa',6);}
+    drawCell(this.food,'#facc15',7);this.snake.forEach((s,i)=>drawCell(s,i===0?'#22d3ee':'#0e7490',i===0?8:0));c.shadowBlur=0;
   };
   loop=(t:number)=>{if(!this.running)return;const dt=Math.min(.05,(t-this.lastTime)/1000);this.lastTime=t;this.update(dt);if(!this.running)return;this.draw();this.frame=requestAnimationFrame(this.loop);};
 }

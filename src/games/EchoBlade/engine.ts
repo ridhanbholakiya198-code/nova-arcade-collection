@@ -196,7 +196,7 @@ export class EchoBladeEngine implements GameEngine {
     }
     
     // Draw Slashes
-    this.ctx.shadowBlur = 10;
+    this.ctx.shadowBlur = 6;
     this.ctx.shadowColor = '#fff';
     for (const s of this.slashes) {
       this.ctx.beginPath();
@@ -225,7 +225,7 @@ export class EchoBladeEngine implements GameEngine {
     // Draw Player
     if (!this.isGameOver) {
       this.ctx.fillStyle = '#fff';
-      this.ctx.shadowBlur = 15;
+      this.ctx.shadowBlur = 8;
       this.ctx.shadowColor = '#fff';
       this.ctx.beginPath();
       this.ctx.arc(this.player.x, this.player.y, 8, 0, Math.PI*2);
