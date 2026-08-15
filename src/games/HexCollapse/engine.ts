@@ -6,7 +6,8 @@ export class HexCollapseEngine implements GameEngine {
   callbacks: GameEngineCallbacks;
   
   width = 0; height = 0;
-  frame = 0;\n  running = false; lastTime = 0;
+  frame = 0;
+  running = false; lastTime = 0;
   score = 0; isGameOver = false;
   
   player = { col: 0, row: 0, x: 0, y: 0, targetX: 0, targetY: 0, jumping: false };

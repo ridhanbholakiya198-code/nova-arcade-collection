@@ -6,7 +6,8 @@ export class TetherBallEngine implements GameEngine {
   callbacks: GameEngineCallbacks;
   
   width = 0; height = 0;
-  frame = 0;\n  running = false; lastTime = 0;
+  frame = 0;
+  running = false; lastTime = 0;
   score = 0; isGameOver = false;
   
   player = { x: 100, y: 300, vx: 5, vy: 0 };

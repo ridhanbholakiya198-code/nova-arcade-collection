@@ -6,7 +6,8 @@ export class QuantumLinkEngine implements GameEngine {
   callbacks: GameEngineCallbacks;
   
   width = 0; height = 0;
-  frame = 0;\n  running = false; lastTime = 0;
+  frame = 0;
+  running = false; lastTime = 0;
   score = 0; isGameOver = false;
   
   nodes: { id: number, x: number, y: number, vx: number, vy: number, color: string }[] = [];

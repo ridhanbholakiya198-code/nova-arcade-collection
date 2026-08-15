@@ -6,7 +6,8 @@ export class SplitStreamEngine implements GameEngine {
   callbacks: GameEngineCallbacks;
   
   width = 0; height = 0;
-  frame = 0;\n  running = false; lastTime = 0;
+  frame = 0;
+  running = false; lastTime = 0;
   score = 0; isGameOver = false;
   
   // Two ships. lane 0 = left, lane 1 = right (for each side)

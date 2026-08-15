@@ -6,7 +6,8 @@ export class NeonDriftEngine implements GameEngine {
   callbacks: GameEngineCallbacks;
   
   width = 0; height = 0;
-  frame = 0;\n  running = false; lastTime = 0;
+  frame = 0;
+  running = false; lastTime = 0;
   score = 0; isGameOver = false;
   
   player = { x: 0, y: 0, radius: 10, vx: 0 };
