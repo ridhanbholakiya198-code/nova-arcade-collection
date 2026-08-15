@@ -220,6 +220,7 @@ export class QuantumLinkEngine implements GameEngine {
     const dt = time - this.lastTime;
     this.lastTime = time;
     if (dt < 100) this.update(dt);
+    if(!this.running)return;
     this.draw();
     this.frame = requestAnimationFrame(this.loop);
   }
