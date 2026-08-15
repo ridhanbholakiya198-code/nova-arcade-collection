@@ -6,6 +6,7 @@ export class OrbitEngine {
   
   // Game State
   frame: number = 0;
+  running = false;
   lastTime: number = 0;
   score: number = 0;
   isGameOver: boolean = false;
@@ -82,11 +83,14 @@ export class OrbitEngine {
   }
 
   start = () => {
+    if (this.running || this.isGameOver) return;
+    this.running = true;
+    this.lastTime = performance.now();
     this.frame = requestAnimationFrame(this.loop);
   }
 
   stop = () => {
-    cancelAnimationFrame(this.frame);
+    this.running = false; cancelAnimationFrame(this.frame);
     window.removeEventListener('resize', this.resize);
     this.canvas.removeEventListener('pointerdown', this.handlePointerDown);
     this.canvas.removeEventListener('pointerup', this.handlePointerUp);
@@ -357,6 +361,7 @@ export class OrbitEngine {
   }
 
   loop = (time: number) => {
+    if (!this.running) return;
     const dt = time - this.lastTime;
     this.lastTime = time;
     

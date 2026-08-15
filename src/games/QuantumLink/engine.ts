@@ -6,7 +6,7 @@ export class QuantumLinkEngine implements GameEngine {
   callbacks: GameEngineCallbacks;
   
   width = 0; height = 0;
-  frame = 0; lastTime = 0;
+  frame = 0;\n  running = false; lastTime = 0;
   score = 0; isGameOver = false;
   
   nodes: { id: number, x: number, y: number, vx: number, vy: number, color: string }[] = [];
@@ -55,10 +55,10 @@ export class QuantumLinkEngine implements GameEngine {
     for(let i=0; i<4; i++) this.spawnNodePair();
   }
   
-  start = () => { this.frame = requestAnimationFrame(this.loop); }
+  start = () => { if (this.running || this.isGameOver) return; this.running = true; this.lastTime = performance.now(); this.frame = requestAnimationFrame(this.loop); }
   
   stop = () => {
-    cancelAnimationFrame(this.frame);
+    this.running = false; cancelAnimationFrame(this.frame);
     window.removeEventListener('resize', this.resize);
     this.canvas.removeEventListener('pointerdown', this.handlePointerDown);
     this.canvas.removeEventListener('pointermove', this.handlePointerMove);
@@ -217,6 +217,7 @@ export class QuantumLinkEngine implements GameEngine {
   }
   
   loop = (time: number) => {
+    if (!this.running) return;
     const dt = time - this.lastTime;
     this.lastTime = time;
     if (dt < 100) this.update(dt);

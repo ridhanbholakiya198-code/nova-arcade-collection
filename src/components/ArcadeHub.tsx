@@ -5,7 +5,10 @@ import { useStore } from '../lib/store.tsx';
 import { audio } from '../lib/audio';
 import {
   Play, Trophy, Gamepad2, Github, Clock3, Info, Palette,
-  ChevronRight, Shield, FileText, X, SunMoon
+  ChevronRight, Shield, FileText, X, MoreVertical, Zap,
+  Wind, Layers, Car, Brain, Orbit, Sparkles, Timer, CircleDot,
+  Crosshair, Boxes, Waypoints, Gauge, Moon, Shuffle, Target, Hexagon,
+  type LucideIcon
 } from 'lucide-react';
 
 interface ArcadeHubProps {
@@ -21,6 +24,28 @@ function formatTime(seconds: number) {
   if (m > 0) return `${m}m ${s}s`;
   return `${s}s`;
 }
+
+const GAME_ICONS: Record<string, LucideIcon> = {
+  gravity_flip: Zap,
+  neon_snake: Waypoints,
+  color_match: Palette,
+  sky_hopper: Wind,
+  tower_balance: Layers,
+  pixel_racer: Car,
+  memory_duel: Brain,
+  orbit_sling: Orbit,
+  neon_drift: Gauge,
+  pulse_grid: CircleDot,
+  void_runner: Shuffle,
+  echo_blade: Crosshair,
+  hex_collapse: Hexagon,
+  chrono_shift: Timer,
+  split_stream: Boxes,
+  quantum_link: Waypoints,
+  shadow_step: Moon,
+  tether_ball: Target,
+  nova_core: Sparkles,
+};
 
 function MenuRow({
   icon,
@@ -87,6 +112,29 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
     localStorage.setItem('nova_arcade_appearance', appearance);
   }, [appearance]);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        setSubMenu(null);
+      }
+    };
+    const closeOnPointer = (event: PointerEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('[data-arcade-menu]')) {
+        setMenuOpen(false);
+        setSubMenu(null);
+      }
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    document.addEventListener('pointerdown', closeOnPointer);
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape);
+      document.removeEventListener('pointerdown', closeOnPointer);
+    };
+  }, [menuOpen]);
+
   const xpForNextLevel = Math.pow(profile.level, 2) * 100;
   const xpForCurrentLevel = Math.pow(profile.level - 1, 2) * 100;
   const progress = Math.max(0, Math.min(100, ((profile.xp - xpForCurrentLevel) / Math.max(1, xpForNextLevel - xpForCurrentLevel)) * 100));
@@ -115,13 +163,13 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
           <p className="text-zinc-500 text-sm mt-2">19 touch-first games · offline ready</p>
         </div>
 
-        <div className="relative">
+        <div className="relative" data-arcade-menu>
           <button
             aria-label="Open menu"
             onClick={() => { audio.init(); audio.playClick(); setMenuOpen(v => !v); setSubMenu(null); }}
             className="w-11 h-11 rounded-full border border-zinc-800 bg-zinc-950/90 text-zinc-300 flex items-center justify-center hover:border-zinc-700 hover:text-white transition-colors"
           >
-            <span className="text-xl leading-none">⋮</span>
+            <MoreVertical size={20} />
           </button>
 
           <AnimatePresence>
@@ -210,14 +258,23 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: Math.min(index * .035, .5) }}
-                className="snap-center shrink-0 w-[82vw] md:w-[380px] h-[475px] rounded-3xl overflow-hidden relative border border-zinc-800 bg-zinc-950"
+                className="snap-center shrink-0 w-[82vw] md:w-[380px] h-[475px] rounded-3xl overflow-hidden relative border border-zinc-800 bg-zinc-950 shadow-[0_18px_70px_rgba(0,0,0,.45)] hover:border-zinc-700 transition-colors"
               >
                 <div className={`absolute inset-0 opacity-[0.08] bg-gradient-to-br ${game.color}`} />
                 <div className="absolute inset-0 p-7 flex flex-col">
-                  <div className="flex gap-2 mb-5">
-                    {game.tags.map(tag => (
-                      <span key={tag} className="px-2.5 py-1 rounded-full bg-black/50 text-[9px] uppercase font-bold tracking-wider text-zinc-500 border border-zinc-800">{tag}</span>
-                    ))}
+                  <div className="flex items-start justify-between gap-4 mb-6">
+                    <div
+                      className="w-14 h-14 rounded-2xl border border-zinc-800 bg-black/60 flex items-center justify-center shadow-inner"
+                      style={{ color: game.accentHex }}
+                      aria-hidden="true"
+                    >
+                      {(() => { const Icon = GAME_ICONS[game.id] ?? Gamepad2; return <Icon size={27} strokeWidth={1.8} />; })()}
+                    </div>
+                    <div className="flex gap-2 flex-wrap justify-end">
+                      {game.tags.map(tag => (
+                        <span key={tag} className="px-2.5 py-1 rounded-full bg-black/50 text-[9px] uppercase font-bold tracking-wider text-zinc-500 border border-zinc-800">{tag}</span>
+                      ))}
+                    </div>
                   </div>
                   <h3 className="font-display text-3xl md:text-4xl mb-3 text-white">{game.title}</h3>
                   <p className="text-sm leading-relaxed text-zinc-400 max-w-[30ch]">{game.description}</p>

@@ -1,20 +1,49 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Nova Arcade Collection
 
-# Run and deploy your AI Studio app
+Nova Arcade Collection is a lightweight, offline-first touch arcade built with React, TypeScript, Vite, and Capacitor.
 
-This contains everything you need to run your app locally.
+## Included
 
-View your app in AI Studio: https://ai.studio/apps/d4732902-a796-4b9e-9073-f938eb310a3f
+- 19 touch-first arcade games
+- AMOLED-first dark interface
+- Local XP, scores, and play-time persistence
+- Procedural Web Audio feedback with no bundled sound library
+- Compact in-app menu with GitHub, Played Time, About, and Appearance controls
+- Android release configuration for Capacitor
 
-## Run Locally
+## Development
 
-**Prerequisites:**  Node.js
+Requirements: Node.js 22+
 
+```bash
+npm ci
+npm run dev
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Create a production web build with:
+
+```bash
+npm run build
+```
+
+Type-check the project with:
+
+```bash
+npm run lint
+```
+
+## Android
+
+The Android project uses the `com.novaarcade.app` application ID.
+
+For a local release build:
+
+```bash
+npm ci
+npm run build
+npx cap sync android
+cd android
+./gradlew assembleRelease --no-daemon
+```
+
+Codemagic uses the same production sequence and preserves npm optional native dependencies for macOS ARM64 builds.

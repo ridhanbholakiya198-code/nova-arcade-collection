@@ -24,12 +24,12 @@ export interface GameDefinition {
 
 const addedGames: GameDefinition[] = [
   { id: 'gravity_flip', title: 'Gravity Flip', description: 'Tap to flip gravity and dodge the incoming barriers.', color: 'from-pink-500 to-rose-600', accent: 'bg-pink-500', accentHex: '#ec4899', unlockLevel: 1, tags: ['Reflex', 'Endless'] },
-  { id: 'neon_snake', title: 'Neon Snake Rewired', description: 'Collect power orbs, use portals, and survive the growing grid.', color: 'from-cyan-400 to-blue-600', accent: 'bg-cyan-400', accentHex: '#22d3ee', unlockLevel: 1, tags: ['Arcade', 'Reflex'] },
-  { id: 'color_match', title: 'Color Match Rush', description: 'Chain the colors fast before the clock runs dry.', color: 'from-orange-400 to-pink-600', accent: 'bg-orange-400', accentHex: '#fb923c', unlockLevel: 1, tags: ['Reaction', 'Speed'] },
-  { id: 'sky_hopper', title: 'Sky Hopper', description: 'Bounce from platform to platform and climb as high as you can.', color: 'from-yellow-300 to-orange-500', accent: 'bg-yellow-300', accentHex: '#fde047', unlockLevel: 1, tags: ['Platformer', 'Endless'] },
-  { id: 'tower_balance', title: 'Tower Balance', description: 'Drop each block cleanly and stack it higher without losing your center.', color: 'from-amber-300 to-yellow-600', accent: 'bg-amber-300', accentHex: '#fcd34d', unlockLevel: 1, tags: ['Timing', 'Precision'] },
-  { id: 'pixel_racer', title: 'Pixel Racer', description: 'Dodge lanes at top speed as traffic closes in from the horizon.', color: 'from-violet-400 to-fuchsia-600', accent: 'bg-violet-400', accentHex: '#a78bfa', unlockLevel: 1, tags: ['Racing', 'Reflex'] },
-  { id: 'memory_duel', title: 'Memory Flip Duel', description: 'Beat the clock, find pairs, and clear the board before time runs out.', color: 'from-emerald-300 to-teal-600', accent: 'bg-emerald-300', accentHex: '#6ee7b7', unlockLevel: 1, tags: ['Memory', 'Puzzle'] },
+  { id: 'neon_snake', title: 'Neon Snake Rewired', description: 'Portals + power orbs.', color: 'from-cyan-400 to-blue-600', accent: 'bg-cyan-400', accentHex: '#22d3ee', unlockLevel: 1, tags: ['Arcade', 'Reflex'] },
+  { id: 'color_match', title: 'Color Match Rush', description: 'Chain the colors fast.', color: 'from-orange-400 to-pink-600', accent: 'bg-orange-400', accentHex: '#fb923c', unlockLevel: 1, tags: ['Reaction', 'Speed'] },
+  { id: 'sky_hopper', title: 'Sky Hopper', description: 'Climb as high as you can.', color: 'from-yellow-300 to-orange-500', accent: 'bg-yellow-300', accentHex: '#fde047', unlockLevel: 1, tags: ['Platformer', 'Endless'] },
+  { id: 'tower_balance', title: 'Tower Balance', description: 'Stack it high, stay steady.', color: 'from-amber-300 to-yellow-600', accent: 'bg-amber-300', accentHex: '#fcd34d', unlockLevel: 1, tags: ['Timing', 'Precision'] },
+  { id: 'pixel_racer', title: 'Pixel Racer', description: 'Dodge lanes at top speed.', color: 'from-violet-400 to-fuchsia-600', accent: 'bg-violet-400', accentHex: '#a78bfa', unlockLevel: 1, tags: ['Racing', 'Reflex'] },
+  { id: 'memory_duel', title: 'Memory Flip Duel', description: 'Beat the clock, find pairs.', color: 'from-emerald-300 to-teal-600', accent: 'bg-emerald-300', accentHex: '#6ee7b7', unlockLevel: 1, tags: ['Memory', 'Puzzle'] },
 ];
 
 const existingGames: GameDefinition[] = [

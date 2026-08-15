@@ -45,6 +45,7 @@ export function GameContainer({
   const [hasStarted, setHasStarted] = useState(false);
   const previousLevelRef = useRef(profile.level);
   const scoreRef = useRef(0);
+  const gameEndedRef = useRef(false);
 
   const stopCurrentEngine = useCallback(() => {
     if (engineRef.current) {
@@ -56,6 +57,7 @@ export function GameContainer({
   const createEngine = useCallback(() => {
     if (!canvasRef.current) return null;
 
+    gameEndedRef.current = false;
     const engine = new EngineClass(canvasRef.current, {
       onScoreUpdate: (nextScore) => {
         const increased = nextScore > scoreRef.current;
@@ -64,6 +66,8 @@ export function GameContainer({
         if (increased) audio.playScore(Math.min(20, nextScore));
       },
       onGameOver: (finalScore) => {
+        if (gameEndedRef.current) return;
+        gameEndedRef.current = true;
         // Stop the loop BEFORE showing the result overlay. This is the
         // central lifecycle guard for every canvas game in the collection.
         engine.stop();
@@ -83,6 +87,7 @@ export function GameContainer({
   useEffect(() => {
     audio.init();
     scoreRef.current = 0;
+    gameEndedRef.current = false;
     setScore(0);
     setGameOver(false);
     setHasStarted(false);
@@ -112,6 +117,7 @@ export function GameContainer({
 
   const handleRestart = () => {
     stopCurrentEngine();
+    gameEndedRef.current = false;
     scoreRef.current = 0;
     setScore(0);
     setGameOver(false);
