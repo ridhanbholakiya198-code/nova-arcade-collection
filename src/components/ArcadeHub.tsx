@@ -63,7 +63,7 @@ function MenuRow({
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left text-zinc-200 hover:bg-white/[0.06] active:bg-white/[0.09] transition-colors"
+      className="nova-menu-row w-full flex items-center gap-3 px-3.5 py-3 rounded-xl text-left text-zinc-200 hover:bg-white/[0.06] active:bg-white/[0.09] transition-colors"
     >
       <span className="text-zinc-400">{icon}</span>
       <span className="flex-1 text-sm font-medium">{label}</span>
@@ -219,7 +219,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
           <button
             aria-label="Open menu"
             onClick={() => { audio.init(); audio.playClick(); setMenuOpen(v => !v); setSubMenu(null); }}
-            className="w-11 h-11 rounded-full border border-zinc-800 bg-zinc-950/90 text-zinc-300 flex items-center justify-center hover:border-zinc-700 hover:text-white transition-colors"
+            className="nova-menu-trigger w-11 h-11 rounded-full border border-zinc-800 bg-zinc-950/90 text-zinc-300 flex items-center justify-center hover:border-zinc-700 hover:text-white transition-colors"
           >
             <MoreVertical size={20} />
           </button>
@@ -230,7 +230,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                 initial={{ opacity: 0, y: -6, scale: .98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -6, scale: .98 }}
-                className="absolute right-0 top-14 z-50 w-[min(15rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] p-1.5 rounded-2xl border border-zinc-800 bg-zinc-950/95 backdrop-blur-xl shadow-2xl overflow-visible"
+                className="nova-menu-panel absolute right-0 top-14 z-50 w-[min(15rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] p-1.5 rounded-2xl border border-zinc-800 bg-zinc-950/95 backdrop-blur-xl shadow-2xl overflow-visible"
               >
                 <MenuRow
                   icon={<Github size={17} />}
@@ -290,7 +290,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
       </header>
 
       <main className="flex-1 px-5 md:px-10 pb-10 overflow-hidden flex flex-col">
-        <div className="bg-zinc-950/80 border border-zinc-900 rounded-2xl p-4 md:p-5 mb-6 flex flex-col md:flex-row md:items-center gap-4">
+        <div className="nova-mastery-card bg-zinc-950/80 border border-zinc-900 rounded-2xl p-4 md:p-5 mb-6 flex flex-col md:flex-row md:items-center gap-4">
           <div className="flex-1">
             <div className="flex justify-between items-end mb-2">
               <div>
@@ -342,7 +342,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                     </div>
                     <div className="flex gap-2 flex-wrap justify-end">
                       {game.tags.map(tag => (
-                        <span key={tag} className="px-2.5 py-1 rounded-full bg-black/50 text-[9px] uppercase font-bold tracking-wider text-zinc-500 border border-zinc-800">{tag}</span>
+                        <span key={tag} className="nova-game-tag px-2.5 py-1 rounded-full bg-black/50 text-[9px] uppercase font-bold tracking-wider text-zinc-500 border border-zinc-800">{tag}</span>
                       ))}
                     </div>
                   </div>

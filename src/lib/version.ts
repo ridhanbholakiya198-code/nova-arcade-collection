@@ -1,5 +1,5 @@
 // Keep this in sync with android/app/build.gradle -> versionName.
-export const APP_VERSION = '1.0.0';
+export const APP_VERSION = '1.0.1';
 export const GITHUB_REPO = 'ridhanbholakiya198-code/nova-arcade-collection';
 export const GITHUB_RELEASES_URL = `https://github.com/${GITHUB_REPO}/releases`;
 
