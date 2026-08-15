@@ -1,9 +1,11 @@
-// Lightweight procedural Web Audio system.
-// No sound files are required; tones are synthesized at runtime.
+// Nova Arcade retro audio system.
+// No background music. Gameplay SFX are short, punchy and rate-limited.
 class AudioSystem {
   ctx: AudioContext | null = null;
   masterGain: GainNode | null = null;
   enabled = true;
+  private lastToneAt = 0;
+  private lastScoreAt = 0;
 
   init() {
     if (!this.ctx) {
@@ -11,74 +13,92 @@ class AudioSystem {
       if (!AudioCtor) return;
       this.ctx = new AudioCtor();
       this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.value = 0.28;
+      this.masterGain.gain.value = 0.20;
       this.masterGain.connect(this.ctx.destination);
     }
-    if (this.ctx.state === 'suspended') {
-      void this.ctx.resume();
-    }
+    if (this.ctx.state === 'suspended') void this.ctx.resume();
   }
 
   setEnabled(enabled: boolean) {
     this.enabled = enabled;
     if (this.masterGain && this.ctx) {
-      this.masterGain.gain.setTargetAtTime(enabled ? 0.28 : 0, this.ctx.currentTime, 0.02);
+      this.masterGain.gain.setTargetAtTime(enabled ? 0.20 : 0, this.ctx.currentTime, 0.02);
     }
   }
 
-  playTone(freq: number, type: OscillatorType, duration: number, vol = 1, slideToFreq?: number) {
+  private tone(freq: number, type: OscillatorType, duration: number, vol = 1, slideToFreq?: number, force = false) {
     if (!this.enabled) return;
     this.init();
     if (!this.ctx || !this.masterGain) return;
+
+    const nowMs = performance.now();
+    if (!force && nowMs - this.lastToneAt < 58) return;
+    this.lastToneAt = nowMs;
 
     const now = this.ctx.currentTime;
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
 
     osc.type = type;
-    osc.frequency.setValueAtTime(Math.max(20, freq), now);
+    osc.frequency.setValueAtTime(Math.max(30, freq), now);
     if (slideToFreq) {
-      osc.frequency.exponentialRampToValueAtTime(Math.max(20, slideToFreq), now + duration);
+      osc.frequency.exponentialRampToValueAtTime(Math.max(30, slideToFreq), now + duration);
     }
 
-    gain.gain.setValueAtTime(Math.max(0.001, vol), now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + duration);
+    const peak = Math.max(0.001, Math.min(0.18, vol));
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(peak, now + Math.min(0.008, duration * 0.25));
+    gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
 
     osc.connect(gain);
     gain.connect(this.masterGain);
     osc.start(now);
-    osc.stop(now + duration);
+    osc.stop(now + duration + 0.01);
   }
 
+  // Public engine callback. This is deliberately rate-limited so games cannot
+  // become an annoying wall of repeated tones.
+  playTone(freq: number, type: OscillatorType, duration: number, vol = 1, slideToFreq?: number) {
+    this.tone(freq, type, Math.min(0.11, duration), Math.min(vol, 0.14), slideToFreq);
+  }
+
+  // Classic short arcade navigation blip.
   playClick() {
-    this.playTone(520, 'sine', 0.045, 0.16, 700);
+    this.tone(740, 'square', 0.045, 0.10, 980, true);
   }
 
   playScore(multiplier = 1) {
-    this.playTone(760 + Math.min(500, multiplier * 30), 'square', 0.07, 0.13);
+    if (!this.enabled) return;
+    const now = performance.now();
+    if (now - this.lastScoreAt < 95) return;
+    this.lastScoreAt = now;
+    const f = 680 + Math.min(420, multiplier * 24);
+    this.tone(f, 'square', 0.055, 0.095, f * 1.25, true);
   }
 
   playCollect() {
-    this.playTone(620, 'triangle', 0.07, 0.18, 980);
+    this.tone(880, 'square', 0.065, 0.11, 1180, true);
   }
 
   playLevelUp() {
-    this.playTone(520, 'triangle', 0.09, 0.2, 780);
-    window.setTimeout(() => this.playTone(780, 'triangle', 0.13, 0.2, 1180), 70);
+    if (!this.enabled) return;
+    this.tone(523, 'square', 0.07, 0.11, 784, true);
+    window.setTimeout(() => this.tone(784, 'square', 0.09, 0.11, 1047, true), 75);
   }
 
   playGameOver() {
-    this.playTone(180, 'sawtooth', 0.28, 0.28, 65);
+    this.tone(220, 'square', 0.12, 0.12, 110, true);
+    window.setTimeout(() => this.tone(110, 'square', 0.14, 0.10, 70, true), 95);
   }
 
   playStart() {
-    this.playTone(330, 'triangle', 0.08, 0.16, 520);
-    window.setTimeout(() => this.playTone(520, 'triangle', 0.1, 0.16, 780), 75);
+    this.tone(392, 'square', 0.055, 0.10, 523, true);
+    window.setTimeout(() => this.tone(523, 'square', 0.055, 0.10, 784, true), 70);
   }
 
-  playTether() { this.playTone(600, 'sine', 0.1, 0.4, 800); }
-  playLaunch() { this.playTone(400, 'triangle', 0.3, 0.5, 200); }
-  playCrash() { this.playTone(150, 'sawtooth', 0.5, 0.6, 50); }
+  playTether() { this.tone(560, 'square', 0.075, 0.11, 760); }
+  playLaunch() { this.tone(480, 'square', 0.10, 0.11, 760); }
+  playCrash() { this.tone(180, 'square', 0.13, 0.12, 70, true); }
 }
 
 export const audio = new AudioSystem();

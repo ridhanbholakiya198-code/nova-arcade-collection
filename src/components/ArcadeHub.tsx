@@ -7,7 +7,7 @@ import {
   Play, Trophy, Gamepad2, Github, Clock3, Info, Palette,
   ChevronRight, Shield, FileText, X, MoreVertical, Zap,
   Wind, Layers, Car, Brain, Orbit, Sparkles, Timer, CircleDot,
-  Crosshair, Boxes, Waypoints, Gauge, Moon, Shuffle, Target, Hexagon,
+  Crosshair, Boxes, Waypoints, Gauge, Moon, Sun, Shuffle, Target, Hexagon,
   type LucideIcon
 } from 'lucide-react';
 
@@ -103,9 +103,10 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [subMenu, setSubMenu] = useState<'about' | null>(null);
   const [panel, setPanel] = useState<'time' | 'terms' | 'privacy' | null>(null);
-  const [appearance, setAppearance] = useState<'amoled' | 'dim'>(() =>
-    (localStorage.getItem('nova_arcade_appearance') as 'amoled' | 'dim') || 'amoled'
-  );
+  const [appearance, setAppearance] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('nova_arcade_appearance');
+    return saved === 'light' || saved === 'dim' ? 'light' : 'dark';
+  });
 
   useEffect(() => {
     document.documentElement.dataset.appearance = appearance;
@@ -142,7 +143,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
   const toggleAppearance = () => {
     audio.init();
     audio.playClick();
-    setAppearance(v => v === 'amoled' ? 'dim' : 'amoled');
+    setAppearance(v => v === 'dark' ? 'light' : 'dark');
   };
 
   const launch = (game: GameDefinition) => {
@@ -152,7 +153,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col font-sans">
+    <div className="nova-hub min-h-screen bg-black text-white flex flex-col font-sans">
       <header className="px-5 pt-5 pb-6 md:px-10 md:pt-8 flex items-start justify-between gap-5">
         <div>
           <div className="flex items-center gap-2 mb-1">
@@ -178,7 +179,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                 initial={{ opacity: 0, y: -6, scale: .98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -6, scale: .98 }}
-                className="absolute right-0 top-14 z-50 w-60 p-1.5 rounded-2xl border border-zinc-800 bg-zinc-950/95 backdrop-blur-xl shadow-2xl"
+                className="absolute right-0 top-14 z-50 w-[min(15rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] p-1.5 rounded-2xl border border-zinc-800 bg-zinc-950/95 backdrop-blur-xl shadow-2xl overflow-visible"
               >
                 <MenuRow
                   icon={<Github size={17} />}
@@ -202,16 +203,16 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                   icon={<Palette size={17} />}
                   label="Appearance"
                   onClick={toggleAppearance}
-                  right={<span className="text-[10px] uppercase tracking-wider text-zinc-600">{appearance === 'amoled' ? 'AMOLED' : 'DIM'}</span>}
+                  right={<span className="nova-appearance-toggle" aria-label={appearance === 'dark' ? 'Switch to light theme' : 'Switch to dark AMOLED theme'}><span className="nova-appearance-thumb">{appearance === 'dark' ? <Moon size={13} /> : <Sun size={13} />}</span></span>}
                 />
 
                 <AnimatePresence>
                   {subMenu === 'about' && (
                     <motion.div
-                      initial={{ opacity: 0, x: 6, scale: .98 }}
-                      animate={{ opacity: 1, x: 0, scale: 1 }}
-                      exit={{ opacity: 0, x: 6, scale: .98 }}
-                      className="absolute right-[calc(100%+8px)] top-[82px] w-56 p-1.5 rounded-2xl border border-zinc-800 bg-zinc-950/95 backdrop-blur-xl shadow-2xl"
+                      initial={{ opacity: 0, height: 0, scale: .98 }}
+                      animate={{ opacity: 1, height: 'auto', scale: 1 }}
+                      exit={{ opacity: 0, height: 0, scale: .98 }}
+                      className="nova-about-submenu w-full p-1.5 rounded-2xl border border-zinc-800 bg-zinc-950/95 backdrop-blur-xl shadow-2xl"
                     >
                       <MenuRow icon={<FileText size={16}/>} label="Terms & Conditions" onClick={() => {setPanel('terms');setMenuOpen(false);setSubMenu(null);}} />
                       <MenuRow icon={<Shield size={16}/>} label="Privacy Policy" onClick={() => {setPanel('privacy');setMenuOpen(false);setSubMenu(null);}} />
