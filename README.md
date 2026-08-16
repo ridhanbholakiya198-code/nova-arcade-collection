@@ -45,3 +45,6 @@ npx cap sync android
 cd android
 ./gradlew assembleRelease --no-daemon
 ```
+
+License
+All rights reserved. This is proprietary, closed-source software — see LICENSE. No part of this repository may be copied, modified, or redistributed without written permission from the copyright holder.
