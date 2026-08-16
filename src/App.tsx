@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useState } from 'react';
 import { StoreProvider } from './lib/store.tsx';
 import { ArcadeHub } from './components/ArcadeHub';
 import { GameContainer, type EngineConstructor } from './components/GameContainer';
-import { GAMES } from './types';
+import { GAMES, RETRO_GAMES } from './types';
 
 // Every game engine is loaded on-demand (code-split) instead of being bundled
 // into the initial app payload. This is what was making the whole app feel
@@ -27,6 +27,9 @@ const engineLoaders: Record<string, () => Promise<{ default: EngineConstructor }
   shadow_step: () => import('./games/ShadowStep/engine').then(m => ({ default: m.ShadowStepEngine })),
   tether_ball: () => import('./games/TetherBall/engine').then(m => ({ default: m.TetherBallEngine })),
   nova_core: () => import('./games/NovaCore/engine').then(m => ({ default: m.NovaCoreEngine })),
+  jungle_swing: () => import('./games/JungleSwing/engine').then(m => ({ default: m.JungleSwingEngine })),
+  guerrilla_strike: () => import('./games/GuerrillaStrike/engine').then(m => ({ default: m.GuerrillaStrikeEngine })),
+  brick_bounder: () => import('./games/BrickBounder/engine').then(m => ({ default: m.BrickBounderEngine })),
 };
 
 const OrbitSlingLazy = lazy(() =>
@@ -63,7 +66,7 @@ function LazyEngineGame({
     };
   }, [gameId]);
 
-  const def = GAMES.find(g => g.id === gameId);
+  const def = [...GAMES, ...RETRO_GAMES].find(g => g.id === gameId);
   if (!def) return null;
 
   if (!EngineClass) return <GameLoadingScreen />;

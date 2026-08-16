@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { GAMES, GameDefinition } from '../types';
+import { GAMES, RETRO_GAMES, GameDefinition } from '../types';
 import { useStore } from '../lib/store.tsx';
 import { audio } from '../lib/audio';
 import { APP_VERSION, checkForUpdate, type VersionCheckResult } from '../lib/version';
@@ -10,6 +10,7 @@ import {
   Wind, Layers, Car, Brain, Orbit, Sparkles, Timer, CircleDot,
   Crosshair, Boxes, Waypoints, Gauge, Moon, Sun, Shuffle, Target, Hexagon,
   Tag, CheckCircle2, ArrowUpCircle, RefreshCw, AlertCircle,
+  TreePine, Flame, Blocks,
   type LucideIcon
 } from 'lucide-react';
 
@@ -47,6 +48,9 @@ const GAME_ICONS: Record<string, LucideIcon> = {
   shadow_step: Moon,
   tether_ball: Target,
   nova_core: Sparkles,
+  jungle_swing: TreePine,
+  guerrilla_strike: Flame,
+  brick_bounder: Blocks,
 };
 
 function MenuRow({
@@ -111,6 +115,8 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
   });
   const [versionCheck, setVersionCheck] = useState<VersionCheckResult | null>(null);
   const [checkingVersion, setCheckingVersion] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<'arcade' | 'retro'>('arcade');
+  const activeGamesList = activeCategory === 'arcade' ? GAMES : RETRO_GAMES;
 
   const runVersionCheck = () => {
     setCheckingVersion(true);
@@ -309,17 +315,45 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
           </div>
         </div>
 
-        <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500 mb-4 flex items-center gap-2">
-          <Gamepad2 size={17} />
-          Games
-        </h2>
+        <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+          <h2 className="text-sm font-bold uppercase tracking-[0.2em] text-zinc-500 flex items-center gap-2">
+            <Gamepad2 size={17} />
+            Games
+          </h2>
+          <div className="flex items-center gap-1 p-1 rounded-full bg-zinc-950 border border-zinc-900">
+            <button
+              onClick={() => {
+                if (activeCategory === 'arcade') return;
+                setActiveCategory('arcade');
+                activeCardIndexRef.current = 0;
+                gamesRowRef.current?.scrollTo({ left: 0 });
+                audio.init(); audio.playClick();
+              }}
+              className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide transition-colors ${activeCategory === 'arcade' ? 'bg-white text-black' : 'text-zinc-500 hover:text-zinc-300'}`}
+            >
+              Arcade
+            </button>
+            <button
+              onClick={() => {
+                if (activeCategory === 'retro') return;
+                setActiveCategory('retro');
+                activeCardIndexRef.current = 0;
+                gamesRowRef.current?.scrollTo({ left: 0 });
+                audio.init(); audio.playClick();
+              }}
+              className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide transition-colors ${activeCategory === 'retro' ? 'bg-white text-black' : 'text-zinc-500 hover:text-zinc-300'}`}
+            >
+              Retro
+            </button>
+          </div>
+        </div>
 
         <div
           ref={gamesRowRef}
           onScroll={handleGamesScroll}
           className="flex-1 overflow-x-auto no-scrollbar snap-x snap-mandatory flex gap-5 pb-6 items-center"
         >
-          {GAMES.map((game, index) => {
+          {activeGamesList.map((game, index) => {
             const stats = profile.gamesStats[game.id];
             return (
               <motion.div
@@ -342,7 +376,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
                     </div>
                     <div className="flex gap-2 flex-wrap justify-end">
                       {game.tags.map(tag => (
-                        <span key={tag} className="nova-game-tag px-2.5 py-1 rounded-full bg-black/50 text-[9px] uppercase font-bold tracking-wider text-zinc-500 border border-zinc-800">{tag}</span>
+                        <span key={tag} className={`nova-game-tag px-2.5 py-1 rounded-full text-[9px] uppercase font-bold tracking-wider border ${tag === 'Retro' ? 'bg-amber-400/10 text-amber-400 border-amber-400/30' : 'bg-black/50 text-zinc-500 border-zinc-800'}`}>{tag}</span>
                       ))}
                     </div>
                   </div>
@@ -395,7 +429,7 @@ export function ArcadeHub({ onLaunchGame }: ArcadeHubProps) {
             </div>
           </div>
           <div className="space-y-2">
-            {GAMES.filter(g => (profile.gamesStats[g.id]?.timePlayed ?? 0) > 0).map(g => (
+            {[...GAMES, ...RETRO_GAMES].filter(g => (profile.gamesStats[g.id]?.timePlayed ?? 0) > 0).map(g => (
               <div key={g.id} className="flex justify-between py-2 border-b border-zinc-900">
                 <span className="text-zinc-300">{g.title}</span>
                 <span className="font-mono text-zinc-500">{formatTime(profile.gamesStats[g.id].timePlayed)}</span>

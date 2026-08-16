@@ -20,6 +20,7 @@ export interface GameDefinition {
   accentHex: string;
   unlockLevel: number;
   tags: string[];
+  category?: 'arcade' | 'retro';
 }
 
 const addedGames: GameDefinition[] = [
@@ -48,3 +49,43 @@ const existingGames: GameDefinition[] = [
 ];
 
 export const GAMES: GameDefinition[] = [...addedGames, ...existingGames];
+
+// A small, separate "Retro" wing of the collection: original games built in
+// the spirit of classic run-and-gun / platformer / jungle-adventure carts —
+// new characters, new art, new level designs, nothing copied — just that
+// same old-school pick-up-and-play vibe, called out under their own tab.
+export const RETRO_GAMES: GameDefinition[] = [
+  {
+    id: 'jungle_swing',
+    title: 'Jungle Swing',
+    description: 'Swing vine to vine through the canopy. Time your release or fall to the river below.',
+    color: 'from-lime-500 to-emerald-700',
+    accent: 'bg-lime-500',
+    accentHex: '#84cc16',
+    unlockLevel: 1,
+    tags: ['Retro', 'Adventure'],
+    category: 'retro',
+  },
+  {
+    id: 'guerrilla_strike',
+    title: 'Guerrilla Strike',
+    description: 'Run, jump, and gun down the advancing squad before they overrun your position.',
+    color: 'from-orange-600 to-red-800',
+    accent: 'bg-orange-600',
+    accentHex: '#ea580c',
+    unlockLevel: 1,
+    tags: ['Retro', 'Run & Gun'],
+    category: 'retro',
+  },
+  {
+    id: 'brick_bounder',
+    title: 'Brick Bounder',
+    description: 'Hop the gaps, stomp the crawlers, grab every coin on the way to the flag.',
+    color: 'from-red-500 to-blue-600',
+    accent: 'bg-red-500',
+    accentHex: '#ef4444',
+    unlockLevel: 1,
+    tags: ['Retro', 'Platformer'],
+    category: 'retro',
+  },
+];
