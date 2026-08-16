@@ -1,0 +1,222 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-display: "Righteous", system-ui, sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+  }
+
+  html { background: #000; }
+
+body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    overflow: hidden; /* Prevent pull-to-refresh on mobile for arcade feel */
+    touch-action: none; /* Disable default touch actions for canvas games */
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html[data-appearance='dim'] body { background-color: #09090b; }
+html[data-appearance='dim'] .bg-black { background-color: #09090b !important; }
+body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+/* Nova Arcade v2 theme + mobile menu polish */
+.nova-hub {
+  min-height: 100dvh;
+}
+
+html[data-appearance='light'] .nova-hub {
+  background: #f5f5f7 !important;
+  color: #18181b !important;
+}
+
+html[data-appearance='light'] .nova-hub .bg-black {
+  background-color: #f5f5f7 !important;
+}
+html[data-appearance='light'] .nova-hub .bg-zinc-950,
+html[data-appearance='light'] .nova-hub .bg-zinc-950/95,
+html[data-appearance='light'] .nova-hub .bg-zinc-950/90,
+html[data-appearance='light'] .nova-hub .bg-zinc-950/80 {
+  background-color: rgba(255,255,255,.94) !important;
+}
+html[data-appearance='light'] .nova-hub .bg-zinc-900/70 {
+  background-color: rgba(244,244,245,.92) !important;
+}
+html[data-appearance='light'] .nova-hub .bg-black/40 {
+  background-color: rgba(24,24,27,.18) !important;
+}
+html[data-appearance='light'] .nova-hub .bg-black/50,
+html[data-appearance='light'] .nova-hub .bg-black/60 {
+  background-color: rgba(255,255,255,.72) !important;
+}
+html[data-appearance='light'] .nova-hub .text-white {
+  color: #18181b !important;
+}
+html[data-appearance='light'] .nova-hub .text-zinc-200 {
+  color: #27272a !important;
+}
+html[data-appearance='light'] .nova-hub .text-zinc-300 {
+  color: #3f3f46 !important;
+}
+html[data-appearance='light'] .nova-hub .text-zinc-400 {
+  color: #52525b !important;
+}
+html[data-appearance='light'] .nova-hub .text-zinc-500 {
+  color: #71717a !important;
+}
+html[data-appearance='light'] .nova-hub .text-zinc-600 {
+  color: #8a8a93 !important;
+}
+html[data-appearance='light'] .nova-hub .text-zinc-700 {
+  color: #a1a1aa !important;
+}
+html[data-appearance='light'] .nova-hub .border-zinc-800 {
+  border-color: #d4d4d8 !important;
+}
+html[data-appearance='light'] .nova-hub .border-zinc-900 {
+  border-color: #e4e4e7 !important;
+}
+html[data-appearance='light'] .nova-hub .shadow-2xl {
+  box-shadow: 0 20px 60px rgba(0,0,0,.14) !important;
+}
+
+/* Game cards in light mode: the dark-theme's heavy black drop shadow and
+   near-invisible translucent-black stat panels read as flat/cheap on a white
+   card, so they get proper elevation + real surfaces instead of the
+   dark-theme values bleeding through. */
+html[data-appearance='light'] .nova-hub .nova-game-card {
+  background-color: #ffffff !important;
+  border-color: #e4e4e9 !important;
+  box-shadow: 0 4px 16px rgba(24,24,27,.06), 0 20px 45px rgba(24,24,27,.10) !important;
+}
+html[data-appearance='light'] .nova-hub .nova-game-card:hover {
+  border-color: #d4d4db !important;
+  box-shadow: 0 6px 20px rgba(24,24,27,.08), 0 26px 55px rgba(24,24,27,.13) !important;
+}
+html[data-appearance='light'] .nova-hub .nova-card-glow {
+  opacity: 0.14 !important;
+}
+html[data-appearance='light'] .nova-hub .nova-icon-box {
+  background-color: #f4f4f6 !important;
+  border-color: #e4e4e9 !important;
+  box-shadow: inset 0 1px 2px rgba(24,24,27,.04) !important;
+}
+html[data-appearance='light'] .nova-hub .nova-stat-box {
+  background-color: #f7f7f9 !important;
+  border-color: #ececef !important;
+}
+html[data-appearance='light'] .nova-hub .nova-game-card .border-zinc-800 {
+  border-color: #e4e4e9 !important;
+}
+
+/* Appearance control */
+.nova-appearance-toggle {
+  width: 52px;
+  height: 30px;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid rgba(161,161,170,.28);
+  background: rgba(39,39,42,.92);
+  display: inline-flex;
+  align-items: center;
+  transition: background .2s ease, border-color .2s ease;
+}
+.nova-appearance-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #050505;
+  color: #fff;
+  transform: translateX(22px);
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), background .2s ease, color .2s ease;
+}
+html[data-appearance='light'] .nova-appearance-toggle {
+  background: #e4e4e7;
+  border-color: #d4d4d8;
+}
+html[data-appearance='light'] .nova-appearance-thumb {
+  transform: translateX(0);
+  background: #fff;
+  color: #52525b;
+  box-shadow: 0 1px 4px rgba(0,0,0,.16);
+}
+
+/* About submenu stays inside the menu on every phone width. */
+.nova-about-submenu {
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-top: 4px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Final light-theme surface pass: keep every hub control readable in light mode. */
+html[data-appearance='light'] .nova-hub .nova-menu-trigger {
+  background: #ffffff !important;
+  border-color: #d4d4d8 !important;
+  color: #18181b !important;
+  box-shadow: 0 6px 18px rgba(24,24,27,.10) !important;
+}
+html[data-appearance='light'] .nova-hub .nova-menu-trigger:hover {
+  background: #f4f4f5 !important;
+  border-color: #a1a1aa !important;
+  color: #18181b !important;
+}
+html[data-appearance='light'] .nova-hub .nova-menu-panel,
+html[data-appearance='light'] .nova-hub .nova-about-submenu {
+  background: rgba(255,255,255,.98) !important;
+  border-color: #dedee3 !important;
+  box-shadow: 0 20px 60px rgba(24,24,27,.18) !important;
+  color: #18181b !important;
+}
+html[data-appearance='light'] .nova-hub .nova-menu-row {
+  color: #27272a !important;
+}
+html[data-appearance='light'] .nova-hub .nova-menu-row > span:first-child {
+  color: #71717a !important;
+}
+html[data-appearance='light'] .nova-hub .nova-menu-row:hover {
+  background: #f4f4f5 !important;
+}
+html[data-appearance='light'] .nova-hub .nova-menu-row:active {
+  background: #e4e4e7 !important;
+}
+html[data-appearance='light'] .nova-hub .nova-mastery-card {
+  background: #ffffff !important;
+  border-color: #dedee3 !important;
+  box-shadow: 0 6px 22px rgba(24,24,27,.07) !important;
+}
+html[data-appearance='light'] .nova-hub .nova-mastery-card .text-zinc-100 {
+  color: #18181b !important;
+}
+html[data-appearance='light'] .nova-hub .nova-mastery-card .bg-zinc-900 {
+  background: #e4e4e7 !important;
+}
+html[data-appearance='light'] .nova-hub .nova-mastery-card .border-zinc-900 {
+  border-color: #e4e4e7 !important;
+}
+html[data-appearance='light'] .nova-hub .nova-mastery-card .bg-white {
+  background: #18181b !important;
+}
+html[data-appearance='light'] .nova-hub .nova-game-tag {
+  background: #f4f4f5 !important;
+  color: #52525b !important;
+  border-color: #d4d4d8 !important;
+}
