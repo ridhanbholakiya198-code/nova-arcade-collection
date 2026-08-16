@@ -27,9 +27,7 @@ const engineLoaders: Record<string, () => Promise<{ default: EngineConstructor }
   shadow_step: () => import('./games/ShadowStep/engine').then(m => ({ default: m.ShadowStepEngine })),
   tether_ball: () => import('./games/TetherBall/engine').then(m => ({ default: m.TetherBallEngine })),
   nova_core: () => import('./games/NovaCore/engine').then(m => ({ default: m.NovaCoreEngine })),
-  jungle_swing: () => import('./games/JungleSwing/engine').then(m => ({ default: m.JungleSwingEngine })),
   guerrilla_strike: () => import('./games/GuerrillaStrike/engine').then(m => ({ default: m.GuerrillaStrikeEngine })),
-  brick_bounder: () => import('./games/BrickBounder/engine').then(m => ({ default: m.BrickBounderEngine })),
 };
 
 const OrbitSlingLazy = lazy(() =>

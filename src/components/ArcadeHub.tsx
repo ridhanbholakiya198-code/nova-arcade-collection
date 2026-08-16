@@ -10,7 +10,7 @@ import {
   Wind, Layers, Car, Brain, Orbit, Sparkles, Timer, CircleDot,
   Crosshair, Boxes, Waypoints, Gauge, Moon, Sun, Shuffle, Target, Hexagon,
   Tag, CheckCircle2, ArrowUpCircle, RefreshCw, AlertCircle,
-  TreePine, Flame, Blocks,
+  Flame,
   type LucideIcon
 } from 'lucide-react';
 
@@ -48,9 +48,7 @@ const GAME_ICONS: Record<string, LucideIcon> = {
   shadow_step: Moon,
   tether_ball: Target,
   nova_core: Sparkles,
-  jungle_swing: TreePine,
   guerrilla_strike: Flame,
-  brick_bounder: Blocks,
 };
 
 function MenuRow({
