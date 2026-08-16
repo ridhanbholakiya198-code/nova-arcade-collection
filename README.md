@@ -45,5 +45,3 @@ npx cap sync android
 cd android
 ./gradlew assembleRelease --no-daemon
 ```
-
-Codemagic uses the same production sequence and preserves npm optional native dependencies for macOS ARM64 builds.
